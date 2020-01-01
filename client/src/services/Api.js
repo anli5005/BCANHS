@@ -1,8 +1,7 @@
 import axios from "axios";
 
 export default () => {
-  console.log(process.env);
   return axios.create({
-    baseURL: process.env.VUE_APP_BACKEND_URL
+    baseURL: "http://localhost:8081"
   });
 };

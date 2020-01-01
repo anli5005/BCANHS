@@ -84,7 +84,7 @@ oldSess.forEach(sess => {
 users.push(currUser);
 
 var newUserSchema = new mongoose.Schema({
-  email: String,
+  username: String,
   name: String,
   subjects: [String],
   availability: [[Number]],

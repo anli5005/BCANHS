@@ -47,12 +47,12 @@ export default {
     async login() {
       try {
         const response = await AuthenticationService.login({
-          email: this.email,
-          password: this.password
+          username: this.form.email,
+          password: this.form.password
         });
-        this.$store.dispatch("setUser", response.data.username);
+        this.$store.dispatch("setUser", response);
       } catch (error) {
-        this.error = error.response.data.error;
+        this.error = error.response.error;
       }
     }
   }

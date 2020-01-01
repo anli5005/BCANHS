@@ -27,7 +27,10 @@
               <b-dropdown-item to="videos">Campaign Videos</b-dropdown-item>
             </b-nav-item-dropdown>
             <b-nav-item to="tutoring">Tutoring</b-nav-item>
-            <b-nav-item href="/login">Login</b-nav-item>
+            <b-nav-item to="/login" v-if="!$store.state.user">Login</b-nav-item>
+            <b-nav-item href="/logout" v-if="$store.state.user"
+              >Logout</b-nav-item
+            >
           </b-navbar-nav>
         </b-collapse>
       </b-container>

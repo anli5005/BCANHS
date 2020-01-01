@@ -51,7 +51,7 @@ app.post("/register", function(req, res) {
 });
 
 app.post("/login", passport.authenticate("local"), function(req, res) {
-  res.send(req.user);
+  res.send(req.user.username);
 });
 
 app.get("/logout", function(req, res) {
