@@ -9,9 +9,9 @@ app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.get("/status", (req, res) => {
+app.post("/login", (req, res) => {
   res.send({
-    message: "WE GOOD!",
+    message: "Ya in!",
   });
 });
 
