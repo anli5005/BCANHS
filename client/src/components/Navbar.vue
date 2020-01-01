@@ -1,8 +1,8 @@
 <template>
   <div>
-    <b-navbar toggleable="lg" type="dark" variant="dark">
+    <b-navbar toggleable="lg" type="dark" variant="dark" fixed="top">
       <b-container>
-        <b-navbar-brand href="#">
+        <b-navbar-brand href="/">
           <img
             src="~@/assets/images/nhs_logo_light.png"
             height="30"
@@ -23,12 +23,10 @@
               >
             </b-nav-item-dropdown>
             <b-nav-item-dropdown text="Board">
-              <b-dropdown-item to="/board">Board Members</b-dropdown-item>
-              <b-dropdown-item to="/board/videos"
-                >Campaign Videos</b-dropdown-item
-              >
+              <b-dropdown-item to="board">Board Members</b-dropdown-item>
+              <b-dropdown-item to="videos">Campaign Videos</b-dropdown-item>
             </b-nav-item-dropdown>
-            <b-nav-item to="/tutoring">Tutoring</b-nav-item>
+            <b-nav-item to="tutoring">Tutoring</b-nav-item>
             <b-nav-item href="/login">Login</b-nav-item>
           </b-navbar-nav>
         </b-collapse>

@@ -7,7 +7,7 @@ var oldSess = require("./dbbackup");
 
 oldSess.sort((a, b) => (a.tutor_username > b.tutor_username ? 1 : -1));
 
-mods = [
+var valMods = [
   "1-3",
   "4-6",
   "7-9",
@@ -22,7 +22,13 @@ mods = [
 function modsToArr(days) {
   var avail = [];
   days.forEach(d => {
-    avail.push(d.split(", "));
+    var modList = d.split(", ");
+    var hrList = new Set();
+    modList.forEach(mod => {
+      var hr = valMods.indexOf(mod);
+      if (hr !== -1) hrList.add(hr);
+    });
+    avail.push([...hrList]);
   });
   return avail;
 }
@@ -78,26 +84,104 @@ oldSess.forEach(sess => {
 users.push(currUser);
 
 var newUserSchema = new mongoose.Schema({
-  bergen_id: String,
+  email: String,
   name: String,
   subjects: [String],
-  availability: [[String]],
+  availability: [[Number]],
+  role: String,
 });
 
-var NewUser = mongoose.model("tutor", newUserSchema);
+var User = mongoose.model("user", newUserSchema);
 
 users.forEach(user => {
-  var newuser = new NewUser({
-    bergen_id: user.id,
+  var newuser = new User({
+    username: user.id + "@bergen.org",
     name: user.name,
     subjects: user.subjects,
     availability: user.availability,
+    role: "Member",
   });
   newuser.save(function(err, user) {
     if (err) {
       console.log(err);
     } else {
       console.log("saved " + user.name);
+    }
+  });
+});
+
+var newuser = new User({
+  username: "aidgli20@bergen.org",
+  name: "Aidan Glickman",
+  subjects: ["ATCS", "Math", "ACT"],
+  availability: [[4], [4], [], [4], [4]],
+  role: "God",
+});
+newuser.save(function(err, user) {
+  if (err) {
+    console.log(err);
+  } else {
+    console.log("saved " + user.name);
+  }
+});
+
+var newrecruits = require("./acceptedemails");
+
+newrecruits.forEach(i => {
+  var newuser = new User({
+    username: i[2],
+    name: i[1] + " " + i[0],
+    subjects: [],
+    availability: [[], [], [], [], []],
+    role: "Member",
+  });
+  newuser.save(function(err, user) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("saved " + user.name);
+    }
+  });
+});
+
+var subjectSchema = new mongoose.Schema({
+  name: String,
+});
+
+var Subject = mongoose.model("subject", subjectSchema);
+
+var subjects = [
+  "Math",
+  "Literature",
+  "History",
+  "French",
+  "Spanish",
+  "Mandarin",
+  "Chemistry",
+  "Biology",
+  "Physics",
+  "AMST",
+  "AAST",
+  "AEDT",
+  "ATCS",
+  "ABF",
+  "ACAHA",
+  "AVPA-",
+  "AVPA-M",
+  "AVPA-V",
+  "SAT",
+  "ACT",
+];
+
+subjects.forEach(sub => {
+  var newSub = new Subject({
+    name: sub,
+  });
+  newSub.save(function(err, sub) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("saved " + sub.name);
     }
   });
 });
