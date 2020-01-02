@@ -2,7 +2,7 @@
   <div>
     <b-container>
       <div class="hero-header">
-        <img class="logo" src="~@/assets/images/nhs_logo_light.png" alt="" />
+        <img class="logo" src="~@/assets/images/nhs_logo_light.png" alt />
         <vue-particles
           color="#dedede"
           :particleOpacity="0.7"
@@ -19,12 +19,11 @@
           hoverMode="grab"
           :clickEffect="true"
           clickMode="push"
-        >
-        </vue-particles>
+        ></vue-particles>
       </div>
-      <div class="centered">
-        <h2 class="text-light">Welcome, NAME</h2>
-        <b-button variant="primary">Edit Tutoring</b-button>
+      <div class="centered" v-if="this.$store.state.isLoggedIn">
+        <h2 class="text-light">Welcome, {{this.$store.state.user.data.name}}</h2>
+        <b-button variant="primary" to="/tutoring">Edit Tutoring</b-button>
         <b-button variant="success">Log Tutoring</b-button>
         <b-button variant="info">Log Community Service</b-button>
         <div class="stats text-light">
@@ -32,15 +31,34 @@
           <h5>Community Service: 10 hours internal, 20 external to go!</h5>
         </div>
       </div>
+      <div class="centered" v-else>
+        <h2 class="text-light">Welcome!</h2>
+        <b-button variant="primary" to="/login">Log In</b-button>
+        <b-button variant="success">Get Tutored</b-button>
+      </div>
     </b-container>
   </div>
 </template>
 
 <script>
 export default {
-  name: "main",
+  name: "home",
   data() {
-    return {};
+    return {
+      loggedIn: false,
+      name: null
+    };
+  },
+  methods: {
+    async mounted() {
+      try {
+        this.loggedIn = this.$store.state.isLoggedIn;
+        this.name = this.$store.state.user.data.name;
+        console.log(this.name);
+      } catch (err) {
+        alert(err);
+      }
+    }
   }
 };
 </script>

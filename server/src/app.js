@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/user");
+const Subject = require("./models/subject");
 
 require("dotenv").config();
 const app = express();
@@ -14,12 +15,6 @@ app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(cors());
 mongoose.connect(process.env.DB_URL);
-
-// var subjectSchema = new mongoose.Schema({
-//   name: String,
-// });
-
-// var Subject = mongoose.model("subject", subjectSchema);
 
 app.use(
   require("express-session")({
@@ -51,7 +46,7 @@ app.post("/register", function(req, res) {
 });
 
 app.post("/login", passport.authenticate("local"), function(req, res) {
-  res.send(req.user.username);
+  res.send({ username: req.user.username, name: req.user.name });
 });
 
 app.get("/logout", function(req, res) {
@@ -59,12 +54,10 @@ app.get("/logout", function(req, res) {
   res.redirect("/");
 });
 
-// app.post("/login", function(req, res) {});
-
 app.get("/tutor/sessions/:subject", function(req, res) {
   User.find({ subjects: req.params.subject }, function(err, result) {
     if (err) {
-      console.log(err);
+      res.send("400");
     } else {
       console.log(result);
       res.send(result);
@@ -72,17 +65,45 @@ app.get("/tutor/sessions/:subject", function(req, res) {
   });
 });
 
-// app.post("/tutor/update", isLoggedIn, function(req, res) {
-//   // var userEmail = req.user;
-//   var userEmail = "aidgli20@bergen.org";
-//   var newSubj = req.body.subject;
-//   var newAvail = req.body.availability;
+app.get("/tutor/:tutor", function(req, res) {
+  User.findOne({ username: req.params.tutor }, function(err, result) {
+    if (err) {
+      res.send("400");
+    } else {
+      res.send(result);
+    }
+  });
+});
 
-//   User.findOneAndUpdate(
-//     { email: userEmail },
-//     { availability: newAvail, subjects: newSubj },
-//   );
-//   res.redirect("/");
-// });
+app.get("/subjects", function(req, res) {
+  var query = Subject.find({}).select("name -_id");
+
+  query.exec(function(err, result) {
+    console.log(result);
+    if (err) res.send(err);
+    var reslist = [];
+    result.forEach(el => {
+      reslist.push(el.name);
+    });
+    res.send(reslist);
+  });
+});
+
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) return next();
+  else res.redirect("/login");
+}
+
+app.post("/tutor/update", isLoggedIn, function(req, res) {
+  var userEmail = req.user;
+  var newSubj = req.body.subject;
+  var newAvail = req.body.availability;
+
+  User.findOneAndUpdate(
+    { username: userEmail },
+    { availability: newAvail, subjects: newSubj },
+  );
+  res.send("200");
+});
 
 app.listen(process.env.PORT || 8081);

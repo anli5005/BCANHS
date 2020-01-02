@@ -1,9 +1,10 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Main from "@/components/Main";
+import Home from "@/components/Home";
 import Bylaws from "@/components/info/Bylaws";
 import Requirements from "@/components/info/Requirements";
 import Login from "@/components/Login";
+import Tutor from "@/components/tutoring/Tutor";
 
 Vue.use(Router);
 
@@ -11,13 +12,18 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "main",
-      component: Main
+      name: "home",
+      component: Home
     },
     {
       path: "/login",
       name: "login",
       component: Login
+    },
+    {
+      path: "/tutoring",
+      name: "tutor",
+      component: Tutor
     },
     {
       path: "/info/bylaws",

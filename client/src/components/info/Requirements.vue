@@ -3,10 +3,10 @@
     <b-container class="text-light">
       <h4>Membership Requirements</h4>
 
-      <strong
-        >Candidates: Requirements for membership consideration for the BCA
-        Chapter of the NHS:</strong
-      >
+      <strong>
+        Candidates: Requirements for membership consideration for the BCA
+        Chapter of the NHS:
+      </strong>
       <ul>
         <li>
           <strong>Scholarship</strong> Minimum 3.750 GPA at the end of
@@ -29,10 +29,10 @@
           willingly).
         </li>
       </ul>
-      <strong
-        >Members: NHS Members in good standing must meet the following
-        requirements by the end of junior year:</strong
-      >
+      <strong>
+        Members: NHS Members in good standing must meet the following
+        requirements by the end of junior year:
+      </strong>
       <ul>
         <li>A cumulative GPA of at least 3.750.</li>
         <li>At least 40 hours of community service.</li>
@@ -49,10 +49,10 @@
           external NHS service project during junior year.
         </li>
       </ul>
-      <strong
-        >Members: NHS Members in good standing must meet the following
-        requirements at the end of senior year:</strong
-      >
+      <strong>
+        Members: NHS Members in good standing must meet the following
+        requirements at the end of senior year:
+      </strong>
       <ul>
         <li>A cumulative GPA of at least 3.750.</li>
         <li>At least 50 hours of community service.</li>
@@ -73,10 +73,10 @@
           external NHS service project during senior year.
         </li>
       </ul>
-      <strong
-        >If you are not invited to join the BCA Chapter of NHS, here are
-        possible reasons:</strong
-      >
+      <strong>
+        If you are not invited to join the BCA Chapter of NHS, here are
+        possible reasons:
+      </strong>
       <ul>
         <li>
           Candidates will not be selected if the GPA is not at least a 3.750,
@@ -120,4 +120,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped>
+.container {
+  margin-top: 60px;
+}
+</style>

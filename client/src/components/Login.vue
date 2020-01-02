@@ -2,11 +2,7 @@
   <div>
     <b-container class="text-light">
       <b-form @submit="login">
-        <b-form-group
-          id="input-group-1"
-          label="Email address:"
-          label-for="input-1"
-        >
+        <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
           <b-form-input
             id="input-1"
             v-model="form.email"
@@ -40,7 +36,8 @@ export default {
       form: {
         email: "",
         password: ""
-      }
+      },
+      failed: false
     };
   },
   methods: {
@@ -51,9 +48,18 @@ export default {
           password: this.form.password
         });
         this.$store.dispatch("setUser", response);
+        this.$router.push("/");
       } catch (error) {
-        this.error = error.response.error;
+        this.makeToast();
       }
+    },
+    makeToast(append = false) {
+      this.$bvToast.toast(`Login Failed. Incorrect email or password.`, {
+        title: "Login Failed",
+        autoHideDelay: 5000,
+        appendToast: append,
+        variant: "danger"
+      });
     }
   }
 };
