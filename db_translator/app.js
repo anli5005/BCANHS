@@ -20,16 +20,36 @@ var valMods = [
 ];
 
 function modsToArr(days) {
-  var avail = [];
-  days.forEach(d => {
-    var modList = d.split(", ");
-    var hrList = new Set();
-    modList.forEach(mod => {
-      var hr = valMods.indexOf(mod);
-      if (hr !== -1) hrList.add(hr);
-    });
-    avail.push([...hrList]);
-  });
+  var avail = [
+    [false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false],
+    [false, false, false, false, false, false, false, false, false],
+  ];
+  // days.forEach(d => {
+  //   var modList = d.split(", ");
+  //   // modList.forEach(mod => {
+  //   //   var hr = valMods.indexOf(mod);
+  //   //   if (hr !== -1) hrList.add();
+  //   // });
+  //   // avail.push([...hrList]);
+  //   for (let i = 0; i < modList.length; i++) {
+  //     const mod = modList[i];
+  //     const hr = valMods.indexOf(mod);
+  //     if (hr !== -1) avail[i][hr] = true;
+  //   }
+  // });
+  for (let d = 0; d < days.length; d++) {
+    var modList = days[d].split(", ");
+
+    for (let i = 0; i < modList.length; i++) {
+      const mod = modList[i];
+      const hr = valMods.indexOf(mod);
+      if (hr !== -1) avail[d][hr] = true;
+    }
+  }
+  console.log(avail);
   return avail;
 }
 
@@ -64,16 +84,13 @@ oldSess.forEach(sess => {
     if (currUser.subjects.indexOf(sess.session) < 0) {
       currUser.subjects.push(sess.session);
     }
-    currUser.availability = multiUnion(
-      currUser.availability,
-      modsToArr([
-        sess.monday,
-        sess.tuesday,
-        sess.wednesday,
-        sess.thursday,
-        sess.friday,
-      ]),
-    );
+    currUser.availability = modsToArr([
+      sess.monday,
+      sess.tuesday,
+      sess.wednesday,
+      sess.thursday,
+      sess.friday,
+    ]);
   } else {
     if (currUser) {
       users.push(currUser);
@@ -87,11 +104,11 @@ var newUserSchema = new mongoose.Schema({
   username: String,
   name: String,
   subjects: [String],
-  availability: [[Number]],
+  availability: [[Boolean]],
   role: String,
 });
 
-var User = mongoose.model("user", newUserSchema);
+var newUser = mongoose.model("user", newUserSchema);
 
 users.forEach(user => {
   var newuser = new User({
@@ -101,34 +118,41 @@ users.forEach(user => {
     availability: user.availability,
     role: "Member",
   });
+  console.log(user.availability);
   newuser.save(function(err, user) {
     if (err) {
       console.log(err);
     } else {
-      console.log("saved " + user.name);
+      // console.log("saved " + user.name);
     }
   });
 });
 
-var newuser = new User({
+var newuser = new newUser({
   username: "aidgli20@bergen.org",
   name: "Aidan Glickman",
   subjects: ["ATCS", "Math", "ACT"],
-  availability: [[4], [4], [], [4], [4]],
+  availability: [
+    [true, true, true, true, false, false, false, false, false],
+    [true, true, true, true, false, false, false, false, false],
+    [true, true, true, true, false, false, false, false, false],
+    [true, true, true, true, false, false, false, false, false],
+    [true, true, true, true, false, false, false, false, false],
+  ],
   role: "God",
 });
 newuser.save(function(err, user) {
   if (err) {
     console.log(err);
   } else {
-    console.log("saved " + user.name);
+    // console.log("saved " + user.name);
   }
 });
 
 var newrecruits = require("./acceptedemails");
 
 newrecruits.forEach(i => {
-  var newuser = new User({
+  var newuser = new newUser({
     username: i[2],
     name: i[1] + " " + i[0],
     subjects: [],
@@ -139,7 +163,7 @@ newrecruits.forEach(i => {
     if (err) {
       console.log(err);
     } else {
-      console.log("saved " + user.name);
+      // console.log("saved " + user.name);
     }
   });
 });
@@ -181,7 +205,7 @@ subjects.forEach(sub => {
     if (err) {
       console.log(err);
     } else {
-      console.log("saved " + sub.name);
+      // console.log("saved " + sub.name);
     }
   });
 });

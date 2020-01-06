@@ -24,8 +24,8 @@
       <div class="centered" v-if="this.$store.state.isLoggedIn">
         <h2 class="text-light">Welcome, {{this.$store.state.user.data.name}}</h2>
         <b-button variant="primary" to="/tutoring">Edit Tutoring</b-button>
-        <b-button variant="success">Log Tutoring</b-button>
-        <b-button variant="info">Log Community Service</b-button>
+        <b-button variant="success" to="/logging/tutor">Log Tutoring</b-button>
+        <b-button variant="info" to="/logging/commserve">Log Community Service</b-button>
         <div class="stats text-light">
           <h5>Tutoring: 90 hours to do!</h5>
           <h5>Community Service: 10 hours internal, 20 external to go!</h5>
@@ -67,7 +67,7 @@ export default {
 .hero-header {
   margin-top: 60px;
   width: 100%;
-  height: 60vh;
+  height: 55vh;
   overflow: hidden;
   position: relative;
 }

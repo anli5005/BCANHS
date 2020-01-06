@@ -4,7 +4,9 @@ import Home from "@/components/Home";
 import Bylaws from "@/components/info/Bylaws";
 import Requirements from "@/components/info/Requirements";
 import Login from "@/components/Login";
-import Tutor from "@/components/tutoring/Tutor";
+import Tutoring from "@/components/tutoring/Tutoring";
+import CommServe from "@/components/logging/CommServe";
+import TutorHours from "@/components/logging/TutorHours";
 
 Vue.use(Router);
 
@@ -22,8 +24,8 @@ export default new Router({
     },
     {
       path: "/tutoring",
-      name: "tutor",
-      component: Tutor
+      name: "tutoring",
+      component: Tutoring
     },
     {
       path: "/info/bylaws",
@@ -34,6 +36,16 @@ export default new Router({
       path: "/info/requirements",
       name: "requirements",
       component: Requirements
+    },
+    {
+      path: "/logging/commserve",
+      name: "logcommserve",
+      component: CommServe
+    },
+    {
+      path: "/logging/tutor",
+      name: "logtutor",
+      component: TutorHours
     }
   ]
 });

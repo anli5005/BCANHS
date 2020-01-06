@@ -4,8 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon --exec 'npm run lint && node src/app.js'",
-    "lint": "eslint --ext .js src"
+    "start": "nodemon --exec 'node src/app.js'"
   },
   "author": "",
   "license": "ISC",
@@ -25,8 +24,6 @@
     "passport-local-mongoose": "^5.0.1"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-plugin-vue": "^6.1.2",
     "nodemon": "^2.0.2"
   }
 }

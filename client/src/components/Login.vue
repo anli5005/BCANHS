@@ -53,11 +53,10 @@ export default {
         this.makeToast();
       }
     },
-    makeToast(append = false) {
+    makeToast() {
       this.$bvToast.toast(`Login Failed. Incorrect email or password.`, {
         title: "Login Failed",
         autoHideDelay: 5000,
-        appendToast: append,
         variant: "danger"
       });
     }

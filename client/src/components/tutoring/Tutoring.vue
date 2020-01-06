@@ -18,26 +18,21 @@ export default {
   },
   async mounted() {
     try {
-      const user = this.$store.state.user.data;
-      var result = await TutorService.get(user);
+      // const user = this.$store.state.user.data;
+      var result = await TutorService.get();
       console.log(result);
-      this.avail = result.available;
-      this.subject = result.subjects;
     } catch (err) {
       console.log(err);
     }
-    try {
-      var result = await SessionService.getAll();
-      this.allSubjects = result;
-    } catch (err) {
-      console.log(err);
-    }
+    // try {
+    //   var result = await SessionService.getAll();
+    //   this.allSubjects = result;
+    // } catch (err) {
+    //   console.log(err);
+    // }
   },
-  methods() {
-    return {
-      cleanAvail: avail => {},
-      cleanSubj: subjects => {}
-    };
+  methods: {
+    cleanAvail() {}
   }
 };
 </script>

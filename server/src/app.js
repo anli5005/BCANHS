@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const morgan = require("morgan");
 const mongoose = require("mongoose");
+const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const User = require("./models/user");
@@ -14,10 +15,13 @@ const app = express();
 app.use(morgan("combined"));
 app.use(bodyParser.json());
 app.use(cors());
-mongoose.connect(process.env.DB_URL);
+mongoose.connect(process.env.DB_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.use(
-  require("express-session")({
+  session({
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: false,
@@ -28,8 +32,19 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+
+passport.serializeUser(function(user, done) {
+  console.log("serializing user: ");
+  console.log(user);
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    console.log("no im not serial");
+    done(err, user);
+  });
+});
 
 app.post("/register", function(req, res) {
   var newUser = new User({ username: req.body.username });
@@ -46,7 +61,7 @@ app.post("/register", function(req, res) {
 });
 
 app.post("/login", passport.authenticate("local"), function(req, res) {
-  res.send({ username: req.user.username, name: req.user.name });
+  res.send(req.user._id);
 });
 
 app.get("/logout", function(req, res) {
@@ -54,7 +69,7 @@ app.get("/logout", function(req, res) {
   res.redirect("/");
 });
 
-app.get("/tutor/sessions/:subject", function(req, res) {
+app.get("/tutoring/sessions/:subject", function(req, res) {
   User.find({ subjects: req.params.subject }, function(err, result) {
     if (err) {
       res.send("400");
@@ -65,7 +80,11 @@ app.get("/tutor/sessions/:subject", function(req, res) {
   });
 });
 
-app.get("/tutor/:tutor", function(req, res) {
+app.get("/tutoring/edit", isLoggedIn, function(req, res) {
+  res.send(req.user);
+});
+
+app.get("/tutor/:tutor/requirements", function(req, res) {
   User.findOne({ username: req.params.tutor }, function(err, result) {
     if (err) {
       res.send("400");
@@ -90,7 +109,7 @@ app.get("/subjects", function(req, res) {
 });
 
 function isLoggedIn(req, res, next) {
-  if (req.isAuthenticated()) return next();
+  if (req.user) return next();
   else res.redirect("/login");
 }
 
@@ -103,7 +122,7 @@ app.post("/tutor/update", isLoggedIn, function(req, res) {
     { username: userEmail },
     { availability: newAvail, subjects: newSubj },
   );
-  res.send("200");
+  res.status(200);
 });
 
 app.listen(process.env.PORT || 8081);
