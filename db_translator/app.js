@@ -1,180 +1,46 @@
 const mongoose = require("mongoose");
+const Hour = require("./models/Hour");
+const Subject = require("./models/Subject");
+const Session = require("./models/Session");
+const User = require("./models/User");
+const axios = require("axios");
+const oldSess = require("./dbbackup");
+const crypto = require("crypto");
 require("dotenv").config();
 
-mongoose.connect(process.env.NEW_DB_URL);
+const db = process.env.DB;
+mongoose
+  .connect(db, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.log(`Error connecting to MongoDB:\n${err}`));
 
-var oldSess = require("./dbbackup");
-
-oldSess.sort((a, b) => (a.tutor_username > b.tutor_username ? 1 : -1));
-
-var valMods = [
-  "1-3",
-  "4-6",
-  "7-9",
-  "10-12",
-  "13-15",
-  "16-18",
-  "19-21",
-  "22-24",
-  "25-27",
-];
-
-function modsToArr(days) {
-  var avail = [
-    [false, false, false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false, false, false],
-    [false, false, false, false, false, false, false, false, false],
-  ];
-  // days.forEach(d => {
-  //   var modList = d.split(", ");
-  //   // modList.forEach(mod => {
-  //   //   var hr = valMods.indexOf(mod);
-  //   //   if (hr !== -1) hrList.add();
-  //   // });
-  //   // avail.push([...hrList]);
-  //   for (let i = 0; i < modList.length; i++) {
-  //     const mod = modList[i];
-  //     const hr = valMods.indexOf(mod);
-  //     if (hr !== -1) avail[i][hr] = true;
-  //   }
-  // });
-  for (let d = 0; d < days.length; d++) {
-    var modList = days[d].split(", ");
-
-    for (let i = 0; i < modList.length; i++) {
-      const mod = modList[i];
-      const hr = valMods.indexOf(mod);
-      if (hr !== -1) avail[d][hr] = true;
-    }
-  }
-  console.log(avail);
-  return avail;
-}
-
-function cleanSess(sess) {
-  return {
-    id: sess.tutor_username,
-    name: sess.tutor,
-    subjects: [sess.session],
-    availability: modsToArr([
-      sess.monday,
-      sess.tuesday,
-      sess.wednesday,
-      sess.thursday,
-      sess.friday,
-    ]),
-  };
-}
-
-function multiUnion(m1, m2) {
-  // union of multidimensional arrays of same length
-  res = [];
-  for (let i = 0; i < m2.length; i++) {
-    res.push([...new Set([...m1[i], ...m2[i]])]);
-  }
-  return res;
-}
-
-users = [];
-var currUser = {};
-oldSess.forEach(sess => {
-  if (sess.tutor_username === currUser.id) {
-    if (currUser.subjects.indexOf(sess.session) < 0) {
-      currUser.subjects.push(sess.session);
-    }
-    currUser.availability = modsToArr([
-      sess.monday,
-      sess.tuesday,
-      sess.wednesday,
-      sess.thursday,
-      sess.friday,
-    ]);
-  } else {
-    if (currUser) {
-      users.push(currUser);
-    }
-    currUser = cleanSess(sess);
-  }
-});
-users.push(currUser);
-
-var newUserSchema = new mongoose.Schema({
-  username: String,
-  name: String,
-  subjects: [String],
-  availability: [[Boolean]],
-  role: String,
-});
-
-var newUser = mongoose.model("user", newUserSchema);
-
-users.forEach(user => {
-  var newuser = new User({
-    username: user.id + "@bergen.org",
-    name: user.name,
-    subjects: user.subjects,
-    availability: user.availability,
-    role: "Member",
+const clearAll = () => {
+  Subject.remove({}, function(err) {
+    if (err) console.log("Failed to clear Subjects");
+    else console.log("Cleared Subjects");
   });
-  console.log(user.availability);
-  newuser.save(function(err, user) {
-    if (err) {
-      console.log(err);
-    } else {
-      // console.log("saved " + user.name);
-    }
+
+  Hour.remove({}, function(err) {
+    if (err) console.log("Failed to clear Hours");
+    else console.log("Cleared Hours");
   });
-});
 
-var newuser = new newUser({
-  username: "aidgli20@bergen.org",
-  name: "Aidan Glickman",
-  subjects: ["ATCS", "Math", "ACT"],
-  availability: [
-    [true, true, true, true, false, false, false, false, false],
-    [true, true, true, true, false, false, false, false, false],
-    [true, true, true, true, false, false, false, false, false],
-    [true, true, true, true, false, false, false, false, false],
-    [true, true, true, true, false, false, false, false, false],
-  ],
-  role: "God",
-});
-newuser.save(function(err, user) {
-  if (err) {
-    console.log(err);
-  } else {
-    // console.log("saved " + user.name);
-  }
-});
-
-var newrecruits = require("./acceptedemails");
-
-newrecruits.forEach(i => {
-  var newuser = new newUser({
-    username: i[2],
-    name: i[1] + " " + i[0],
-    subjects: [],
-    availability: [[], [], [], [], []],
-    role: "Member",
+  Session.remove({}, function(err) {
+    if (err) console.log("Failed to clear Sessions");
+    else console.log("Cleared Sessions");
   });
-  newuser.save(function(err, user) {
-    if (err) {
-      console.log(err);
-    } else {
-      // console.log("saved " + user.name);
-    }
+
+  User.remove({}, function(err) {
+    if (err) console.log("Failed to clear Users");
+    else console.log("Cleared Users");
   });
-});
+};
 
-var subjectSchema = new mongoose.Schema({
-  name: String,
-});
-
-var Subject = mongoose.model("subject", subjectSchema);
-
-var subjects = [
+const subjects = [
   "Math",
   "Literature",
   "History",
@@ -190,22 +56,153 @@ var subjects = [
   "ATCS",
   "ABF",
   "ACAHA",
-  "AVPA-",
+  "AVPA-T",
   "AVPA-M",
   "AVPA-V",
   "SAT",
   "ACT",
 ];
 
-subjects.forEach(sub => {
-  var newSub = new Subject({
-    name: sub,
+const hrs = [
+  "1-3",
+  "4-6",
+  "7-9",
+  "10-12",
+  "13-15",
+  "16-18",
+  "19-21",
+  "22-24",
+  "25-27",
+];
+
+const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+const addSubjs = () => {
+  subjects.forEach(s => {
+    let newSub = new Subject({ name: s });
+    newSub.save(function(err, sub) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("saved " + sub.name);
+      }
+    });
   });
-  newSub.save(function(err, sub) {
-    if (err) {
-      console.log(err);
-    } else {
-      // console.log("saved " + sub.name);
+};
+
+const addHrs = () => {
+  for (let i = 0; i < hrs.length; i++) {
+    const hr = hrs[i];
+    for (let j = 0; j < days.length; j++) {
+      const day = days[j];
+      let newHr = new Hour({ name: day + " " + hr, day: j, hour: i });
+      newHr.save(function(err, hr) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("saved " + hr.name);
+        }
+      });
     }
+  }
+};
+
+const createSessDates = async days => {
+  hours = [];
+  for (let i = 0; i < days.length; i++) {
+    const day = days[i];
+    if (day == "") continue;
+    // console.log(day);
+    let mods = day.replace(/ /g, "").split(",");
+    // console.log(mods);
+    for (let j = 0; j < mods.length; j++) {
+      const mod = mods[j];
+      let hourX = hrs.indexOf(mod);
+      let hour = await Hour.findOne({ hour: hourX, day: i });
+      if (!hour)
+        // console.log(
+        //   "Hour error for day " + i + ", hour " + hourX + " (" + mod + ")",
+        // );
+        void 0;
+      else hours.push(hour.id);
+    }
+  }
+};
+
+const createSubj = async subString => {
+  let subStringClean = subString;
+  if (subString === "AVPA-") subStringClean = "AVPA-T";
+
+  let subject = await Subject.findOne({ name: subStringClean });
+  if (!subject) console.log("Subject error for subject " + subStringClean);
+  return subject.id;
+};
+
+const pushUser = async usr => {
+  try {
+    let result = await axios.post(
+      process.env.BACKEND_URL + "api/auth/register",
+      {
+        name: usr.name,
+        username: usr.username + "@bergen.org",
+        password: crypto.randomBytes(32).toString("hex"),
+      },
+    );
+    if (!result) console.log("Error Registering " + usr.name);
+    else {
+      console.log("Registered " + usr.name);
+      let session = new Session({
+        subjects: usr.subjects,
+        hours: usr.hours,
+      });
+      let sessionCreate = await session.save();
+      if (!sessionCreate) console.log("Error creating session");
+      else {
+        console.log("Created Session " + sessionCreate);
+        let updateUsr = await User.findByIdAndUpdate(result.id, {
+          avail: sessionCreate.id,
+        });
+        console.log(updateUsr);
+        if (!updateUsr) console.log("Error Updating " + usr.name);
+        else console.log("Updated " + usr.name);
+      }
+    }
+  } catch (err) {
+    void 0;
+  }
+};
+
+const addOldUsers = async () => {
+  oldSess.sort((a, b) => (a.tutor_username > b.tutor_username ? 1 : -1));
+  users = [];
+  currUser = {};
+  oldSess.forEach(sess => {
+    if (sess.tutor_username !== currUser.username) {
+      if (currUser) users.push(currUser);
+      currUser = {};
+      currUser.username = sess.tutor_username;
+      currUser.name = sess.tutor;
+      currUser.hours = createSessDates([
+        sess.monday,
+        sess.tuesday,
+        sess.wednesday,
+        sess.thursday,
+        sess.friday,
+      ]);
+      currUser.subjects = [];
+    }
+    currUser.subjects.push(createSubj(sess.session));
   });
-});
+  users.forEach(usr => {
+    pushUser(usr);
+  });
+};
+
+const main = () => {
+  // clearAll();
+  // addSubjs();
+  // addHrs();
+  addOldUsers();
+};
+
+main();
