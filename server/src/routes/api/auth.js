@@ -117,15 +117,11 @@ router.post("/forgot", async (req, res) => {
         "<p>Either you or someone else recently requested to reset your BCA NHS password. If this was you, please click the link below to reset your password. If this wasn't you then ignore this email.</p>" +
         "<a href=" +
         process.env.CLIENT_URL +
-        "/reset/" +
-        user.id +
-        "/" +
+        "/#/reset/" +
         resetToken +
-        '">' +
+        ">" +
         process.env.CLIENT_URL +
-        "/reset/" +
-        user.id +
-        "/" +
+        "/#/reset/" +
         resetToken +
         "</a>" +
         "<br><br>" +
@@ -133,7 +129,10 @@ router.post("/forgot", async (req, res) => {
     };
     let sentMail = await sgMail.send(msg);
     res.status(200).json({
-      msg: "Email sent successfully to " + user.username,
+      msg:
+        "Email sent successfully to " +
+        user.username +
+        ". Be sure to check your spam.",
     });
   } catch (err) {
     res.status(500).json({ msg: err });
@@ -148,7 +147,7 @@ router.post("/reset", async (req, res) => {
   const token = req.body.token;
   const password = req.body.password;
 
-  const forgotDoc = await ResetPassword.findOne({
+  const forgotDoc = await ResetPassword.findOneAndDelete({
     token: token,
   });
   if (!forgotDoc) {
@@ -157,7 +156,6 @@ router.post("/reset", async (req, res) => {
         "Token invalid or expired. If you want to reset your password please fill out the form again.",
     });
   }
-
   const user = await User.findByIdAndUpdate(forgotDoc.user, {});
 
   try {

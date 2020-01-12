@@ -1,0 +1,22 @@
+@import "_custvars.scss";
+@import "~nord/src/sass/nord.scss";
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap-vue/src/index.scss";
+@import url("https://fonts.googleapis.com/css?family=Fira+Sans&display=swap");
+
+body {
+  background-color: $nord0;
+  font-family: "Fira Sans", sans-serif;
+}
+
+.centered {
+  text-align: center;
+}
+
+.form {
+  // background-color: #3b4252;
+  width: 50vw;
+  height: 50vw;
+  margin-left: auto;
+  margin-right: auto;
+}
