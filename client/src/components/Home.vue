@@ -22,7 +22,7 @@
         ></vue-particles>
       </div>
       <div class="centered" v-if="this.$store.state.isLoggedIn">
-        <h2 class="text-light">Welcome, {{this.$store.state.user.data.name}}</h2>
+        <h2 class="text-light">Welcome, {{this.$store.state.user.name}}</h2>
         <b-button variant="primary" to="/tutoring">Edit Tutoring</b-button>
         <b-button variant="success" to="/logging/tutor">Log Tutoring</b-button>
         <b-button variant="info" to="/logging/commserve">Log Community Service</b-button>

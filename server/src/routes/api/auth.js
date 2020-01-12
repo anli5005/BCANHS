@@ -103,7 +103,7 @@ router.post("/forgot", async (req, res) => {
   await ResetPassword.findOneAndDelete({ user: user.id });
 
   try {
-    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetToken = crypto.randomBytes(16).toString("hex");
     const resetDoc = new ResetPassword({ token: resetToken, user: user.id });
     resetDoc.save();
 

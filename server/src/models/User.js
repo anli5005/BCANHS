@@ -19,10 +19,6 @@ const userSchema = new Schema({
     type: Date,
     default: Date.now,
   },
-  avail: {
-    type: Schema.Types.ObjectId,
-    ref: "Session",
-  },
 });
 
 module.exports = User = mongoose.model("User", userSchema);

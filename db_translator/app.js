@@ -9,14 +9,6 @@ const crypto = require("crypto");
 require("dotenv").config();
 
 const db = process.env.DB;
-mongoose
-  .connect(db, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch(err => console.log(`Error connecting to MongoDB:\n${err}`));
 
 const clearAll = () => {
   Subject.remove({}, function(err) {
@@ -107,72 +99,63 @@ const addHrs = () => {
   }
 };
 
-const createSessDates = async days => {
+const createSessDates = days => {
   hours = [];
   for (let i = 0; i < days.length; i++) {
     const day = days[i];
     if (day == "") continue;
     // console.log(day);
     let mods = day.replace(/ /g, "").split(",");
-    // console.log(mods);
+    console.log(mods);
     for (let j = 0; j < mods.length; j++) {
       const mod = mods[j];
       let hourX = hrs.indexOf(mod);
-      let hour = await Hour.findOne({ hour: hourX, day: i });
-      if (!hour)
-        // console.log(
-        //   "Hour error for day " + i + ", hour " + hourX + " (" + mod + ")",
-        // );
-        void 0;
-      else hours.push(hour.id);
+      hours.push({ hour: hourX, day: i });
     }
   }
+  return hours;
 };
 
-const createSubj = async subString => {
+const createSubj = subString => {
   let subStringClean = subString;
   if (subString === "AVPA-") subStringClean = "AVPA-T";
 
-  let subject = await Subject.findOne({ name: subStringClean });
-  if (!subject) console.log("Subject error for subject " + subStringClean);
-  return subject.id;
+  Subject.findOne({ name: subStringClean })
+    .then(subject => {
+      return subject.id;
+    })
+    .catch(err => {
+      console.log("Subject error for subject " + subStringClean);
+    });
 };
 
-const pushUser = async usr => {
-  try {
-    let result = await axios.post(
-      process.env.BACKEND_URL + "api/auth/register",
-      {
-        name: usr.name,
-        username: usr.username + "@bergen.org",
-        password: crypto.randomBytes(32).toString("hex"),
-      },
-    );
-    if (!result) console.log("Error Registering " + usr.name);
-    else {
-      console.log("Registered " + usr.name);
-      let session = new Session({
-        subjects: usr.subjects,
-        hours: usr.hours,
-      });
-      let sessionCreate = await session.save();
-      if (!sessionCreate) console.log("Error creating session");
-      else {
-        console.log("Created Session " + sessionCreate);
-        let updateUsr = await User.findByIdAndUpdate(result.id, {
-          avail: sessionCreate.id,
+const pushUser = usr => {
+  axios
+    .post(process.env.BACKEND_URL + "api/auth/register", {
+      name: usr.name,
+      username: usr.username + "@bergen.org",
+      password: crypto.randomBytes(32).toString("hex"),
+    })
+    .then(res => {
+      console.log("Registered " + res.data.user.name);
+      axios
+        .post(process.env.BACKEND_URL + "api/users/update/verbose", {
+          user: res.data.user.id,
+          hours: usr.hours,
+          subjects: usr.subjects,
+        })
+        .then(user => {
+          console.log(user);
+        })
+        .catch(err => {
+          console.log("Error Updating " + usr.name);
+          console.log(err.response.data);
         });
-        console.log(updateUsr);
-        if (!updateUsr) console.log("Error Updating " + usr.name);
-        else console.log("Updated " + usr.name);
-      }
-    }
-  } catch (err) {
-    void 0;
-  }
+    })
+    .catch(err => console.log("Error registering " + usr.name));
 };
 
-const addOldUsers = async () => {
+const addOldUsers = () => {
   oldSess.sort((a, b) => (a.tutor_username > b.tutor_username ? 1 : -1));
   users = [];
   currUser = {};
@@ -191,7 +174,7 @@ const addOldUsers = async () => {
       ]);
       currUser.subjects = [];
     }
-    currUser.subjects.push(createSubj(sess.session));
+    currUser.subjects.push(sess.session);
   });
   users.forEach(usr => {
     pushUser(usr);
@@ -199,10 +182,20 @@ const addOldUsers = async () => {
 };
 
 const main = () => {
-  // clearAll();
-  // addSubjs();
-  // addHrs();
+  addSubjs();
+  addHrs();
   addOldUsers();
 };
 
-main();
+mongoose
+  .connect(db, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("Connected to MongoDB");
+    clearAll();
+    main();
+  })
+  .catch(err => console.log(`Error connecting to MongoDB:\n${err}`));
