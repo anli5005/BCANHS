@@ -2,6 +2,10 @@
   <div>
     <b-container class="text-light">
       <h4 class="display-4">Chapter Bylaws</h4>
+      <h5>
+        NOTE: This hasn't been updated in a while. A lot of it may no longer
+        apply. If you have questions about rules please contact a board member.
+      </h5>
 
       <h6 class="display-6">ARTICLE I: NAME</h6>
       <p>
@@ -388,16 +392,16 @@
 </template>
 
 <script>
-export default {
-  name: "bylaws",
-  data() {
-    return {};
-  }
-};
+  export default {
+    name: "bylaws",
+    data() {
+      return {};
+    },
+  };
 </script>
 
 <style lang="scss" scoped>
-.container {
-  margin-top: 60px;
-}
+  .container {
+    margin-top: 60px;
+  }
 </style>

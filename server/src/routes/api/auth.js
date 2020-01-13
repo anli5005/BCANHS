@@ -1,5 +1,6 @@
 const User = require("../../models/User");
 const ResetPassword = require("../../models/ResetPassword");
+const Session = require("../../models/Session");
 const router = require("express").Router();
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
@@ -71,6 +72,10 @@ router.post("/register", async (req, res) => {
 
     newUser.password = hash;
     let user = await newUser.save();
+
+    const newSess = new Session({ tutor: user.id });
+
+    newSess.save();
 
     const token = await jwt.sign({ id: user.id }, process.env.JWT, {
       expiresIn: 86400,

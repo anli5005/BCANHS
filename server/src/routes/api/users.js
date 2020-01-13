@@ -14,17 +14,25 @@ router.get("/", auth, (req, res) => {
     .then(user => res.json(user));
 });
 
+router.get("/session", auth, (req, res) => {
+  console.log(req.user.id);
+  Session.findOne({ tutor: req.user.id })
+    .then(session => {
+      console.log(session);
+      res.json(session);
+    })
+    .catch(err => res.status(400).json({ msg: err }));
+});
+
 // @route   POST api/users/update
 // @desc    Update user session
 // @access  Private
 router.post("/update", auth, (req, res) => {
-  User.findByIdAndUpdate(req.user.id, {
-    session: new Session({
-      hours: req.body.hours,
-      subjects: req.body.subjects,
-    }),
-  })
-    .then(user => res.json(user))
+  Session.findOneAndUpdate(
+    { tutor: req.user.id },
+    { hours: req.body.hours, subjects: req.body.subjects },
+  )
+    .then(() => res.json({ msg: "Updated Successfully" }))
     .catch(err => res.status(400).json({ msg: err }));
 });
 

@@ -2,6 +2,11 @@
   <div>
     <b-container class="text-light">
       <h4>Membership Requirements</h4>
+      <h5>
+        NOTE: This hasn't been updated in a while. A lot of it may no longer
+        apply. If you have questions about membership requirements please
+        contact a board member.
+      </h5>
 
       <strong>
         Candidates: Requirements for membership consideration for the BCA
@@ -74,8 +79,8 @@
         </li>
       </ul>
       <strong>
-        If you are not invited to join the BCA Chapter of NHS, here are
-        possible reasons:
+        If you are not invited to join the BCA Chapter of NHS, here are possible
+        reasons:
       </strong>
       <ul>
         <li>
@@ -112,16 +117,16 @@
 </template>
 
 <script>
-export default {
-  name: "requirements",
-  data() {
-    return {};
-  }
-};
+  export default {
+    name: "requirements",
+    data() {
+      return {};
+    },
+  };
 </script>
 
 <style lang="scss" scoped>
-.container {
-  margin-top: 60px;
-}
+  .container {
+    margin-top: 60px;
+  }
 </style>

@@ -1,6 +1,8 @@
 <template>
   <div>
     <b-container class="text-light vert-center">
+      <h1>Forgot Password</h1>
+      <hr />
       <b-form @submit="forgot" class="vert-form">
         <b-form-group
           id="input-group-1"
