@@ -8,9 +8,13 @@ export default {
   },
   update(params) {
     console.log(params);
-    return Api().post("api/users/update", {
-      hours: params.hours,
-      subjects: params.subjects,
-    });
+    return Api().post(
+      "api/users/update",
+      {
+        hours: params.hours,
+        subjects: params.subjects,
+      },
+      { headers: { "x-auth-token": params.token } },
+    );
   },
 };

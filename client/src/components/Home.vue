@@ -26,10 +26,6 @@
         <b-button variant="primary" to="/tutoring">Edit Tutoring</b-button>
         <b-button variant="success" to="/logging/tutor">Log Tutoring</b-button>
         <b-button variant="info" to="/logging/commserve">Log Community Service</b-button>
-        <div class="stats text-light">
-          <h5>Tutoring: 90 hours to do!</h5>
-          <h5>Community Service: 10 hours internal, 20 external to go!</h5>
-        </div>
       </div>
       <div class="centered" v-else>
         <h2 class="text-light">Welcome!</h2>

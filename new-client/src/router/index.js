@@ -8,6 +8,7 @@ import Login from "@/components/auth/Login";
 import Forgot from "@/components/auth/Forgot";
 import Reset from "@/components/auth/Reset";
 import Tutor from "@/components/tutoring/Tutor";
+import GetTutored from "@/components/tutoring/GetTutored";
 import CommServe from "@/components/logging/CommServe";
 import TutorHours from "@/components/logging/TutorHours";
 
@@ -49,6 +50,11 @@ export default new Router({
       name: "tutor",
       component: Tutor,
       beforeEnter: requireAuth,
+    },
+    {
+      path: "/tutoring/get",
+      name: "get-tutored",
+      component: GetTutored,
     },
     {
       path: "/info/bylaws",

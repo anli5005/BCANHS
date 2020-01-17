@@ -13,9 +13,7 @@
               :value="subject.id"
               v-model="selSubs"
               inline
-            >
-              {{ subject.name }}
-            </b-form-checkbox>
+            >{{ subject.name }}</b-form-checkbox>
           </b-form-group>
         </b-col>
         <b-col lg="9">
@@ -47,107 +45,110 @@
 </template>
 
 <script>
-  import TutorService from "@/services/TutorService";
-  import SessionService from "@/services/SessionService";
-  export default {
-    name: "tutor",
-    data() {
-      return {
-        avail: [],
-        selSubs: [],
-        selHours: [],
-        subjects: [],
-        hours: [],
-        days: ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        mods: [
-          "1-3",
-          "4-6",
-          "7-9",
-          "10-12",
-          "13-15",
-          "16-18",
-          "19-21",
-          "22-24",
-          "25-27",
-        ],
-      };
-    },
-    async mounted() {
-      try {
-        let allSubjects = await SessionService.getSubjects().catch(() =>
-          this.$bvToast.toast("Failed to fetch subjects. Please reload.", {
-            title: "Failed",
-            variant: "danger",
-            autoHideDelay: 5000,
-          }),
-        );
+import TutorService from "@/services/TutorService";
+import SessionService from "@/services/SessionService";
+export default {
+  name: "tutor",
+  data() {
+    return {
+      avail: [],
+      selSubs: [],
+      selHours: [],
+      subjects: [],
+      hours: [],
+      days: ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      mods: [
+        "1-3",
+        "4-6",
+        "7-9",
+        "10-12",
+        "13-15",
+        "16-18",
+        "19-21",
+        "22-24",
+        "25-27"
+      ]
+    };
+  },
+  async mounted() {
+    try {
+      let allSubjects = await SessionService.getSubjects().catch(() =>
+        this.$bvToast.toast("Failed to fetch subjects. Please reload.", {
+          title: "Failed",
+          variant: "danger",
+          autoHideDelay: 5000
+        })
+      );
 
-        let allHours = await SessionService.getHours().catch(() =>
-          this.$bvToast.toast("Failed to fetch hours. Please reload.", {
-            title: "Failed",
-            variant: "danger",
-            autoHideDelay: 5000,
-          }),
-        );
+      let allHours = await SessionService.getHours().catch(() =>
+        this.$bvToast.toast("Failed to fetch hours. Please reload.", {
+          title: "Failed",
+          variant: "danger",
+          autoHideDelay: 5000
+        })
+      );
 
-        let currSess = await TutorService.getSession(
-          this.$store.state.token,
-        ).catch(() => {
-          this.$root.$bvToast.toast(
-            "Failed to fetch user. Are you logged in?",
-            {
-              title: "Failed",
-              variant: "danger",
-              autoHideDelay: 5000,
-            },
-          );
-          this.$router.push("/login");
+      let currSess = await TutorService.getSession(
+        this.$store.state.token
+      ).catch(() => {
+        console.log("boop");
+        this.$root.$bvToast.toast("Failed to fetch user. Are you logged in?", {
+          title: "Failed",
+          variant: "danger",
+          autoHideDelay: 5000
         });
+        this.$router.push("/login");
+      });
 
-        currSess.data.subjects.forEach(sub => {
-          console.log(sub);
-          this.selSubs.push(sub);
-        });
+      currSess.data.subjects.forEach(sub => {
+        console.log(sub);
+        this.selSubs.push(sub);
+      });
 
-        currSess.data.hours.forEach(hr => {
-          this.selHours.push(hr);
-        });
+      currSess.data.hours.forEach(hr => {
+        this.selHours.push(hr);
+      });
 
-        this.hours = [...allHours.data];
+      this.hours = [...allHours.data];
 
-        allSubjects.data.forEach(sub => {
-          this.subjects.push({ id: sub._id, name: sub.name });
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    },
-    methods: {
-      submit() {
-        TutorService.update({
-          hours: this.selHours,
-          subjects: this.selSubs,
-        }).then(res => {
-          this.$root.$bvToast.toast("Updated your session successfully!", {
+      allSubjects.data.forEach(sub => {
+        this.subjects.push({ id: sub._id, name: sub.name });
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  methods: {
+    submit() {
+      TutorService.update({
+        hours: this.selHours,
+        subjects: this.selSubs,
+        token: this.$store.state.token
+      }).then(res => {
+        this.$root.$bvToast
+          .toast("Updated your session successfully!", {
             title: "Success!",
             variant: "success",
-            autoHideDelay: 5000,
+            autoHideDelay: 5000
+          })
+          .catch(err => {
+            this.$bvToast.toast(err);
           });
-          this.$router.push("/");
-        });
-      },
-    },
-  };
+        this.$router.push("/");
+      });
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
-  .container {
-    margin-top: 60px;
-  }
-  table {
-    width: 100%;
-  }
-  tr {
-    width: 50%;
-  }
+.container {
+  margin-top: 60px;
+}
+table {
+  width: 100%;
+}
+tr {
+  width: 20%;
+}
 </style>
