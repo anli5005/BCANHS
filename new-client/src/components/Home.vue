@@ -36,7 +36,7 @@
       <div class="centered" v-else>
         <h2 class="text-light">Welcome!</h2>
         <b-button variant="primary" to="/login">Log In</b-button>
-        <b-button variant="success">Get Tutored</b-button>
+        <b-button variant="success" to="/tutoring/get">Get Tutored</b-button>
       </div>
     </b-container>
   </div>

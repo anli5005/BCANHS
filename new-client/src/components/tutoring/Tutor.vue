@@ -100,6 +100,8 @@ export default {
         this.$router.push("/login");
       });
 
+      console.log(currSess.data)
+
       currSess.data.subjects.forEach(sub => {
         console.log(sub);
         this.selSubs.push(sub);
