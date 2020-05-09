@@ -3,7 +3,7 @@
     <b-container class="text-light">
       <h1>Login</h1>
       <div class="vert-center">
-        <b-form @submit="login" class="vert-form">
+        <b-form @submit.prevent class="vert-form">
           <b-form-group
             id="input-group-1"
             label="Email address:"
@@ -31,7 +31,7 @@
             ></b-form-input>
           </b-form-group>
 
-          <b-button type="submit" variant="primary">Submit</b-button>
+          <b-button type="submit" variant="primary" @click="login">Submit</b-button>
           <b-button to="forgot" variant="warning">Forgot Password</b-button>
         </b-form>
       </div>
