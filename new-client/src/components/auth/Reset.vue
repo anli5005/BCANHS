@@ -3,7 +3,7 @@
     <b-container class="text-light vert-center">
       <h1>Reset password</h1>
       <hr />
-      <b-form @submit="reset" class="vert-form">
+      <b-form @submit.prevent class="vert-form">
         <b-form-group
           id="input-group-1"
           label="New Password:"
@@ -18,7 +18,7 @@
           ></b-form-input>
         </b-form-group>
 
-        <b-button type="submit" variant="primary">Submit</b-button>
+        <b-button type="submit" variant="primary" @click="reset">Submit</b-button>
       </b-form>
     </b-container>
   </div>

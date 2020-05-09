@@ -4,7 +4,7 @@
       <h1>Forgot Password</h1>
       <hr />
       <div class="vert-center">
-        <b-form @submit="forgot" class="vert-form">
+        <b-form @submit.prevent class="vert-form">
           <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
             <b-form-input
               id="input-1"
@@ -15,7 +15,7 @@
             ></b-form-input>
           </b-form-group>
 
-          <b-button type="submit" variant="primary">Submit</b-button>
+          <b-button type="submit" variant="primary" @click="forgot">Submit</b-button>
         </b-form>
       </div>
     </b-container>
