@@ -269,13 +269,14 @@
           .catch(err => {
             this.$bvToast.toast(err);
           });
-      });
-      */
+        });
+        */
         
 
         this.$nextTick(() => {
           this.$bvModal.hide('modal-prevent-closing')
 
+          // Should be in above code but moved here for prototype.
           this.$root.$bvToast.toast("Tutoring request sent successfully! Expect a response soon from an NHS tutor.", {
             title: "Success!",
             variant: "success",
