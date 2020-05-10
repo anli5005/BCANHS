@@ -250,6 +250,7 @@
         console.log(this.rName);
         console.log(this.subject);
         console.log(this.selHours);
+        console.log(this.tutSes);
 
         // Push rEmail, rName, subject, and selHours to backend function that filters for NHS tutor availability and sends email using SendGrid API (like the one in server\src\routes\api\auth.js).
 
