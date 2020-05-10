@@ -16,7 +16,7 @@
             >{{ subject.name }}</b-form-checkbox>
           </b-form-group>
         </b-col>
-        <b-col lg="9">
+        <b-col lg="8">
           <h3>Availability</h3>
           <table>
             <tr>
@@ -38,6 +38,24 @@
             </tr>
           </table>
         </b-col>
+        <b-col lg="1">
+          <h3>Notifications</h3>
+          <b-form-checkbox
+            v-model="notifications"
+            :value="notifications"
+            >Enable Tutoring Request Notifications?
+
+            <b-button id="help-button" style="font-size: 11px;">              
+              What's this?
+            </b-button>
+
+            <b-tooltip target="help-button" placement="bottom">
+              Recieve an automatic email when a student who aligns with your availability requests tutoring for one of your subjects.
+            </b-tooltip>
+            
+          </b-form-checkbox>
+        </b-col>
+
         <b-button @click="submit" variant="success">Submit</b-button>
       </b-row>
     </b-container>
@@ -54,6 +72,7 @@ export default {
       avail: [],
       selSubs: [],
       selHours: [],
+      //notifications: false,
       subjects: [],
       hours: [],
       days: ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
@@ -111,6 +130,8 @@ export default {
         this.selHours.push(hr);
       });
 
+      //this.notifications.push(currSess.data.notifications);
+
       this.hours = [...allHours.data];
 
       allSubjects.data.forEach(sub => {
@@ -125,6 +146,7 @@ export default {
       TutorService.update({
         hours: this.selHours,
         subjects: this.selSubs,
+        //notifications: this.notifications,
         token: this.$store.state.token
       }).then(res => {
         this.$root.$bvToast
