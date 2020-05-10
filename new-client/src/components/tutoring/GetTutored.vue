@@ -276,7 +276,7 @@
         this.$nextTick(() => {
           this.$bvModal.hide('modal-prevent-closing')
 
-          // Should be in above code but moved here for prototype.
+          // Should be in RequestService.sendEmail callback but moved here to show for prototype.
           this.$root.$bvToast.toast("Tutoring request sent successfully! Expect a response soon from an NHS tutor.", {
             title: "Success!",
             variant: "success",
