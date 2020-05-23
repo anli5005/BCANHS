@@ -1,6 +1,6 @@
-# BCA NHS rebuild
+# New webmaster - David Ionita
 
-what is this fork for? as new webmaster of BCANHS, I added these aditions to the site (more to come)
+What is this fork for? - As the new webmaster of BCANHS, I added some new features to the site (more to come) and fixed some bugs.
 
 # BCA NHS rebuild
 
