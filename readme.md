@@ -11,3 +11,4 @@ rebuild of the BCA NHS in express and vue
 (If these are in the repo then the project aint done!)
 
 - change axios url
+- just clean up a bunch of stuff and finish features
