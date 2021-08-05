@@ -1,3 +1,5 @@
+# New webmaster - Anthony Li
+
 # New webmaster - David Ionita
 
 What is this fork for? - As the new webmaster of BCANHS, I added some new features to the site (more to come) and fixed some bugs.
