@@ -1,1 +1,1 @@
-web: cd new-client && yarn start
+web: yarn --cwd new-client start
