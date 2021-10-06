@@ -3,7 +3,8 @@
     <b-container class="text-light">
       <h1>Forgot Password</h1>
       <hr />
-      <div class="vert-center">
+      <br>
+      <div>
         <b-form @submit.prevent class="vert-form">
           <b-form-group id="input-group-1" label="Email address:" label-for="input-1">
             <b-form-input
@@ -18,6 +19,8 @@
           <b-button type="submit" variant="primary" @click="forgot">Submit</b-button>
         </b-form>
       </div>
+      <br>
+      <h5>Be sure to check your spam/junk folder!</h5>
     </b-container>
   </div>
 </template>

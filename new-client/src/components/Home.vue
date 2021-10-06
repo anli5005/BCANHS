@@ -2,7 +2,7 @@
   <div>
     <b-container>
       <div class="hero-header">
-        <img class="logo" src="~@/assets/images/nhs_logo_light.png" alt />
+        <img class="logo" style="max-width: 100%;" src="~@/assets/images/nhs_logo_light.png" alt />
         <vue-particles
           color="#dedede"
           :particleOpacity="0.7"
@@ -22,10 +22,10 @@
         ></vue-particles>
       </div>
       <div class="centered" v-if="this.$store.state.isLoggedIn">
-        <h2 class="text-light">Welcome, {{ name }}</h2>
-        <b-button variant="primary" to="/tutoring/edit">Edit Tutoring</b-button>
-        <b-button variant="success" to="/logging/tutor">Log Tutoring</b-button>
-        <b-button variant="info" to="/logging/commserve">Log Community Service</b-button>
+        <h2 class="text-light" style="margin-top: 10px">Welcome, {{ name }}</h2>
+        <b-button variant="primary" to="/tutoring/edit" style="margin-top: 10px">Edit Tutoring</b-button>
+        <b-button variant="success" to="/logging/tutor" style="margin-top: 10px">Log Tutoring</b-button>
+        <b-button variant="info" to="/logging/commserve" style="margin-top: 10px">Log Community Service</b-button>
 
         <Stats :tutoring="tutoring" :internal="internal" :external="external" />
 
