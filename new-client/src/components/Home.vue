@@ -1,25 +1,27 @@
-<template>
+<template>  
   <div>
+    <div class="home-particles">
+      <vue-particles
+        color="#dedede"
+        :particleOpacity="0.7"
+        :particlesNumber="80"
+        shapeType="circle"
+        :particleSize="4"
+        linesColor="#dedede"
+        :linesWidth="1"
+        :lineLinked="true"
+        :lineOpacity="0.4"
+        :linesDistance="150"
+        :moveSpeed="1"
+        :hoverEffect="true"
+        hoverMode="grab"
+        :clickEffect="true"
+        clickMode="push"
+      ></vue-particles>
+    </div>
     <b-container>
       <div class="hero-header">
         <img class="logo" style="max-width: 100%;" src="~@/assets/images/nhs_logo_light.png" alt />
-        <vue-particles
-          color="#dedede"
-          :particleOpacity="0.7"
-          :particlesNumber="80"
-          shapeType="circle"
-          :particleSize="4"
-          linesColor="#dedede"
-          :linesWidth="1"
-          :lineLinked="true"
-          :lineOpacity="0.4"
-          :linesDistance="150"
-          :moveSpeed="1"
-          :hoverEffect="true"
-          hoverMode="grab"
-          :clickEffect="true"
-          clickMode="push"
-        ></vue-particles>
       </div>
       <div class="centered" v-if="this.$store.state.isLoggedIn">
         <h2 class="text-light" style="margin-top: 10px">Welcome, {{ name }}</h2>
@@ -136,5 +138,17 @@
   }
   .stats {
     padding-top: 10px;
+  }
+  .home-particles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    overflow: hidden;
+  }
+  .navbar {
+    background-color: transparent;
   }
 </style>
