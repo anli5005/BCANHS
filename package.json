@@ -6,6 +6,6 @@
   "scripts": {
     "heroku-postbuild": "./heroku-postbuild.sh"
   },
-  "workspaces": ["new-client"],
+  "workspaces": ["new-client", "server"],
   "private": true
 }
