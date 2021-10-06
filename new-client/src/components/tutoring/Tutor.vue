@@ -4,7 +4,7 @@
       <h1>Edit your tutoring</h1>
       <hr />
       <b-row>
-        <b-col lg="3">
+        <b-col lg="4">
           <h3>Subjects</h3>
           <b-form-group label="Subjects">
             <b-form-checkbox
@@ -38,7 +38,7 @@
             </tr>
           </table>
         </b-col>
-        <b-col lg="1">
+        <!-- <b-col lg="1">
           <h3>Notifications</h3>
           <b-form-checkbox
             v-model="notifications"
@@ -54,7 +54,7 @@
             </b-tooltip>
             
           </b-form-checkbox>
-        </b-col>
+        </b-col> -->
 
         <b-button @click="submit" variant="success">Submit</b-button>
       </b-row>

@@ -44,7 +44,7 @@
 
       <br /> <!-- please spare me for using <br /> instead of CSS -->
 
-      <b-button v-b-modal.modal-prevent-closing variant="outline-primary" style="margin: 20px 0 20px 0;">Click Here to fill out a General Tutoring Request and an NHS tutor will get back to you.</b-button>
+      <!-- <b-button v-b-modal.modal-prevent-closing variant="outline-primary" style="margin: 20px 0 20px 0;">Click Here to fill out a General Tutoring Request and an NHS tutor will get back to you.</b-button>
 
       <b-modal
         id="modal-prevent-closing"
@@ -138,7 +138,7 @@
           </b-form-group>
         
         </form>
-      </b-modal>
+      </b-modal> -->
 
 
       </b-row>
