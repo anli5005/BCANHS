@@ -1,4 +1,4 @@
-<template>  
+<template>
   <div>
     <div class="home-particles">
       <vue-particles
