@@ -26,7 +26,7 @@
             <th v-for="day in days" :key="day">{{ day }}</th>
           </tr>
           <tr v-for="i in 9" :key="i">
-            <th>{{ mods[i - 1] }}</th>
+            <th>{{ periods[i - 1] }}</th>
             <td v-for="j in 5" :key="j">
               <a
                 v-for="tutor in tutSes[
@@ -122,7 +122,7 @@
                 <th v-for="day in days" :key="day">{{ day }}</th>
               </tr>
               <tr v-for="i in 9" :key="i">
-                <th>{{ mods[i - 1] }}</th>
+                <th>{{ periods[i - 1] }}</th>
                 <td v-for="j in 5" :key="j">
                   <b-form-checkbox
                     :value="
@@ -166,16 +166,16 @@
         hours: [],
         subjects: [],
         days: ["", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-        mods: [
-          "Pd 1",
-          "Pd 2",
-          "Pd 3",
-          "Pd 4",
-          "Pd 5",
-          "Pd 6",
-          "Pd 7",
-          "Pd 8",
-          "Pd 9",
+        periods: [
+          "Period 1",
+          "Period 2",
+          "Period 3",
+          "Period 4",
+          "Period 5",
+          "Period 6",
+          "Period 7",
+          "Period 8",
+          "Period 9",
         ],
       };
     },
