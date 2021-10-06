@@ -7,7 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "axios": "^0.19.1",
+    "axios": "0.22",
     "bootstrap-vue": "^2.2.0",
     "core-js": "^3.4.4",
     "nord": "^0.2.1",
