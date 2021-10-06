@@ -1,1 +1,1 @@
-web: yarn --cwd new-client start
+web: yarn workspace bca_nhs_client start
