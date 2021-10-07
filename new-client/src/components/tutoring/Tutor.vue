@@ -22,7 +22,7 @@
             <tr>
               <th v-for="day in days" :key="day">{{ day }}</th>
             </tr>
-            <tr v-for="i in 9" :key="i">
+            <tr v-for="i in 10" :key="i">
               <th>{{ periods[i - 1] }}</th>
               <td v-for="j in 5" :key="j">
                 <b-form-checkbox
@@ -85,7 +85,8 @@ export default {
         "6",
         "7",
         "8",
-        "9"
+        "9",
+        "After School",
       ]
     };
   },

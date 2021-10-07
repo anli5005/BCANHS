@@ -25,7 +25,7 @@
           <tr>
             <th v-for="day in days" :key="day">{{ day }}</th>
           </tr>
-          <tr v-for="i in 9" :key="i">
+          <tr v-for="i in 10" :key="i">
             <th>{{ periods[i - 1] }}</th>
             <td v-for="j in 5" :key="j">
               <a
@@ -176,6 +176,7 @@
           "Period 7",
           "Period 8",
           "Period 9",
+          "After School",
         ],
       };
     },
