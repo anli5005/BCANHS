@@ -2,6 +2,7 @@
   <div>
     <b-container class="text-light">
       <h1>Login</h1>
+      <p><strong>Note:</strong> We're switching to a singing in with Google soon. In the meantime, use your existing username and password.</p>
       <div class="vert-center">
         <b-form @submit.prevent class="vert-form">
           <b-form-group
