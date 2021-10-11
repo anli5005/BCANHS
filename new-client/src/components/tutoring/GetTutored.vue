@@ -4,6 +4,8 @@
       :active.sync="loading"
       :can-cancel="false"
       :is-full-page="true"
+      background-color="#2E3440"
+      color="#ECEFF4"
     ></loading>
     <b-container class="text-light">
       <h1>Get Tutored</h1>
