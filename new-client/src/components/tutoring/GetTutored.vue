@@ -12,13 +12,19 @@
       <hr />
       <b-row>
         <div class="flex">
-          <b-form-select v-model="subject">
+          <b-form-select v-model="subject" placeholder="Select a subject">
             <b-form-select-option
               v-for="sub in subjects"
               :value="sub.id"
               :key="sub.id"
               >{{ sub.name }}</b-form-select-option
             >
+            <b-form-select-option
+              v-if="subjects.length === 0"
+              :value="null"
+              disabled>
+              Loading subjects...
+            </b-form-select-option>
           </b-form-select>
           <b-button @click="update" variant="success">Submit</b-button>
         </div>
