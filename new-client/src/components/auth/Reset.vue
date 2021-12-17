@@ -2,6 +2,7 @@
   <div>
     <b-container class="text-light vert-center">
       <h1>Reset password</h1>
+      <p><strong>Note:</strong> We're currently experiencing some technical issues related to the sending of emails. If resetting your password does not work, try again later.</p>
       <hr />
       <b-form @submit.prevent class="vert-form">
         <b-form-group
